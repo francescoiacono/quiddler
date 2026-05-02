@@ -54,6 +54,7 @@ Technical direction:
 - Put route slices under `src/routes/<route-name>/`.
 - Do not add a `pages` folder; this project calls route-owned UI `routes`.
 - Keep route-specific components, styles, helpers, stores, and tests colocated inside their route slice unless they are genuinely shared.
+- Put non-trivial route subcomponents in their own kebab-case folder with their component file, colocated `.styles.ts`, and `index.ts`.
 - Keep app-level wiring, such as the route table, under `src/app/`.
 - Keep `src/main.tsx` as the React entry point.
 - Use the `@/` import alias for shared or cross-slice imports from `src`.
