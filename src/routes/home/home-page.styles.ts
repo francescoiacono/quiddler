@@ -10,6 +10,7 @@ export const styles = {
     background: "#fbfaf7",
     color: "#202020",
     minH: "100svh",
+    pb: "calc(7rem + env(safe-area-inset-bottom))",
     px: { base: "4", md: "8" },
     pt: { base: "4", md: "8" },
   }),

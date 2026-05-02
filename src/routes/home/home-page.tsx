@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { WalletCards } from "lucide-react";
 import { Navigate, useNavigate } from "react-router";
+import { BottomNav } from "@/app/bottom-nav";
 import { maxQuiddlerPlayers, minQuiddlerPlayers, useGameStore } from "@/game";
 import { copy } from "@/i18n/copy";
 import { hasPlayerName, normalizePlayerName } from "./home-helpers";
@@ -106,6 +107,7 @@ export const HomePage = () => {
           </button>
         </section>
       </div>
+      <BottomNav />
     </main>
   );
 };

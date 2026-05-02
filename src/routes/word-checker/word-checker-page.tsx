@@ -2,6 +2,7 @@ import { type FormEvent, useId, useRef, useState } from "react";
 import { Home } from "lucide-react";
 import { Link } from "react-router";
 import { BottomNav } from "@/app/bottom-nav";
+import { useGameStore } from "@/game";
 import { copy } from "@/i18n/copy";
 import { styles } from "./word-checker-page.styles";
 
@@ -72,6 +73,7 @@ const getDefinitionsFromResponse = (payload: unknown): WordDefinition[] => {
 };
 
 export const WordCheckerPage = () => {
+  const activeGame = useGameStore((state) => state.activeGame);
   const wordCheckerCopy = copy.routes.wordChecker;
   const wordInputId = useId();
   const errorId = useId();
@@ -140,6 +142,7 @@ export const WordCheckerPage = () => {
   };
 
   const resultText = status === null ? null : wordCheckerCopy.result[status];
+  const gamePath = activeGame === null ? "/" : "/game";
 
   return (
     <main className={styles.page}>
@@ -149,7 +152,7 @@ export const WordCheckerPage = () => {
           <Link
             aria-label={wordCheckerCopy.header.gameLabel}
             className={styles.iconButton}
-            to="/game"
+            to={gamePath}
           >
             <Home className={styles.headerIcon} />
           </Link>
