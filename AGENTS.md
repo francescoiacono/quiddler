@@ -16,6 +16,11 @@ Docs are local at `node_modules/vite-plus/docs` or online at https://viteplus.de
 
 # Project Notes
 
+## Maintaining This File
+
+- Keep this file updated when making important project-wide decisions about structure, naming, styling, state, data access, validation, deployment, or tooling.
+- Do not document one-off implementation details here; only record conventions that future work should follow.
+
 ## Product Direction
 
 Build a mobile-first Quiddler scorekeeper for a single game master.
@@ -40,6 +45,7 @@ Technical direction:
 - Use lowercase kebab-case for source file and folder names under `src`.
 - Keep React component exports in PascalCase so JSX can render them normally.
 - Prefer arrow functions assigned to `const` wherever the framework does not require a function declaration.
+- Prefer named exports over default exports wherever the framework does not require a default export.
 - Use required framework/tooling filenames as-is when a tool expects them, such as `AGENTS.md`, `README.md`, or config files.
 
 ## Structure
@@ -50,16 +56,26 @@ Technical direction:
 - Keep route-specific components, styles, helpers, stores, and tests colocated inside their route slice unless they are genuinely shared.
 - Keep app-level wiring, such as the route table, under `src/app/`.
 - Keep `src/main.tsx` as the React entry point.
+- Use the `@/` import alias for shared or cross-slice imports from `src`.
+- Add slice entry points with `index.ts` when they make cross-slice imports cleaner, such as `@/app` or `@/routes/home`.
 
 ## Styling
 
 - Use PandaCSS for component and route styles.
+- Import Panda generated modules through `@styled-system/*`.
 - Put component styles in a colocated `.styles.ts` file.
 - Export a named object called `styles` from each `.styles.ts` file.
 - Define style values inside that `styles` object using Panda's `css()` function.
 - Keep `.tsx` files focused on markup and behavior by importing `styles` from the colocated style file.
 - Keep global CSS in `src/index.css` limited to Panda layers, resets, and document-level defaults.
 - The generated `styled-system` folder is ignored; run `vp run panda:codegen` if it needs to be recreated.
+
+## Copy And I18n
+
+- Keep user-facing strings in the i18n copy layer rather than hard-coding them in components.
+- Use `src/i18n/locales/en.ts` as the English source copy file.
+- Import copy through `src/i18n/copy.ts` so a future full i18n provider can replace that entry point without changing every route.
+- Do not add a full i18n runtime library until the app needs locale switching, formatting, pluralization, or external translation workflows.
 
 ## Accessibility
 
