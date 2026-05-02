@@ -1,2 +1,1 @@
-export { App } from "./app";
 export { BottomNav } from "./bottom-nav";

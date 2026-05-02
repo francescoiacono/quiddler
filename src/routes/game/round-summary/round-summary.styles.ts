@@ -1,0 +1,76 @@
+import { css } from "@styled-system/css";
+
+export const styles = {
+  roundSummary: css({
+    alignItems: "center",
+    background: "#ffffff",
+    border: "2px solid #b8b6b0",
+    borderRadius: "8px",
+    display: "grid",
+    gap: "4",
+    gridTemplateColumns: "minmax(0, 1fr) auto minmax(0, 1fr)",
+    minH: "7.5rem",
+    p: { base: "4", sm: "5" },
+  }),
+  roundSummaryText: css({
+    alignItems: "center",
+    display: "grid",
+    gap: "3",
+    gridTemplateColumns: "auto minmax(0, 1fr)",
+    minW: "0",
+  }),
+  cardsIcon: css({
+    color: "#6b6b6b",
+    display: { base: "none", sm: "block" },
+    h: "2rem",
+    w: "2rem",
+  }),
+  roundTitle: css({
+    fontSize: { base: "2.45rem", sm: "2.85rem" },
+    fontWeight: "800",
+    letterSpacing: "0",
+    lineHeight: "1",
+    m: "0",
+    overflowWrap: "anywhere",
+  }),
+  roundMeta: css({
+    color: "#3e3e3e",
+    fontSize: { base: "1.1rem", sm: "1.25rem" },
+    fontWeight: "700",
+    letterSpacing: "0",
+    lineHeight: "1.2",
+    m: "2 0 0",
+  }),
+  summaryDivider: css({
+    background: "#c9c6be",
+    h: "4.25rem",
+    w: "2px",
+  }),
+  leaderSummary: css({
+    alignItems: "center",
+    display: "grid",
+    gap: { base: "2", sm: "3" },
+    gridTemplateColumns: "auto minmax(0, 1fr)",
+    minW: "0",
+  }),
+  trophyIcon: css({
+    color: "#4b4b4b",
+    h: { base: "2.3rem", sm: "2.8rem" },
+    w: { base: "2.3rem", sm: "2.8rem" },
+  }),
+  leaderLabel: css({
+    color: "#3d3d3d",
+    fontSize: { base: "1rem", sm: "1.1rem" },
+    fontWeight: "800",
+    lineHeight: "1.2",
+    m: "0",
+  }),
+  leaderName: css({
+    color: "#202020",
+    fontSize: { base: "1.25rem", sm: "1.45rem" },
+    fontWeight: "700",
+    lineHeight: "1.2",
+    m: "1 0 0",
+    overflowWrap: "anywhere",
+  }),
+};

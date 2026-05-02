@@ -1,0 +1,65 @@
+import { css } from "@styled-system/css";
+
+export const styles = {
+  nav: css({
+    background: "rgba(255, 255, 255, 0.96)",
+    borderTop: "1px solid #d4d4d4",
+    bottom: "0",
+    display: "grid",
+    gridTemplateColumns: "repeat(2, minmax(0, 1fr))",
+    left: "0",
+    minH: "5.5rem",
+    pb: "env(safe-area-inset-bottom)",
+    position: "fixed",
+    right: "0",
+    zIndex: "10",
+  }),
+  link: css({
+    alignItems: "center",
+    color: "#6a6a6a",
+    display: "grid",
+    fontSize: "0.8125rem",
+    fontWeight: "700",
+    gap: "1",
+    justifyItems: "center",
+    letterSpacing: "0",
+    lineHeight: "1.1",
+    minH: "4.75rem",
+    outline: "none",
+    pb: "2",
+    position: "relative",
+    pt: "3",
+    textDecoration: "none",
+    transition: "background 120ms ease, color 120ms ease",
+    _focusVisible: {
+      boxShadow: "inset 0 0 0 3px rgba(33, 33, 33, 0.18)",
+    },
+    _hover: {
+      background: "rgba(32, 32, 32, 0.04)",
+      color: "#202020",
+    },
+  }),
+  activeLink: css({
+    background: "linear-gradient(180deg, rgba(32, 32, 32, 0.07), rgba(32, 32, 32, 0))",
+    color: "#202020",
+    fontWeight: "800",
+    _before: {
+      background: "#202020",
+      borderRadius: "999px",
+      content: '""',
+      height: "0.2rem",
+      left: "50%",
+      position: "absolute",
+      top: "0.45rem",
+      transform: "translateX(-50%)",
+      width: "2.25rem",
+    },
+    "& svg": {
+      transform: "translateY(-1px)",
+    },
+  }),
+  icon: css({
+    h: "1.8rem",
+    w: "1.8rem",
+  }),
+};
