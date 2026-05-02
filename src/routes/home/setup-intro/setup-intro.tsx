@@ -7,16 +7,15 @@ export const SetupIntro = () => {
 
   return (
     <div className={styles.header}>
-      <span className={styles.headerIcon}>
-        <WalletCards className={styles.cardsIcon} />
-      </span>
-      <div className={styles.headerText}>
-        <p className={styles.kicker}>{homeCopy.kicker}</p>
+      <div className={styles.titleRow}>
+        <span className={styles.headerIcon}>
+          <WalletCards className={styles.cardsIcon} />
+        </span>
         <h2 className={styles.title} id="home-title">
           {homeCopy.title}
         </h2>
-        <p className={styles.intro}>{homeCopy.intro}</p>
       </div>
+      <p className={styles.intro}>{homeCopy.intro}</p>
     </div>
   );
 };

@@ -1,6 +1,6 @@
 export const en = {
   app: {
-    documentTitle: "Quiddler",
+    documentTitle: "Quiddler Counter",
     navigation: {
       game: "Game",
       primaryLabel: "Primary",
@@ -90,7 +90,6 @@ export const en = {
         submit: "Create game",
       },
       intro: "Add everyone before the first round. The roster locks when the game starts.",
-      kicker: "Quiddler scorekeeper",
       players: {
         add: "Add",
         countLabel: "players",

@@ -2,13 +2,16 @@ import { css } from "@styled-system/css";
 
 export const styles = {
   roundSummary: css({
-    alignItems: "center",
+    alignItems: { base: "stretch", sm: "center" },
     background: "#ffffff",
     border: "2px solid #b8b6b0",
     borderRadius: "8px",
     display: "grid",
     gap: "4",
-    gridTemplateColumns: "minmax(0, 1fr) auto minmax(0, 1fr)",
+    gridTemplateColumns: {
+      base: "1fr",
+      sm: "max-content auto minmax(0, 1fr)",
+    },
     minH: "7.5rem",
     p: { base: "4", sm: "5" },
   }),
@@ -17,11 +20,11 @@ export const styles = {
     display: "grid",
     gap: "3",
     gridTemplateColumns: "auto minmax(0, 1fr)",
+    justifySelf: "start",
     minW: "0",
   }),
   cardsIcon: css({
     color: "#6b6b6b",
-    display: { base: "none", sm: "block" },
     h: "2rem",
     w: "2rem",
   }),
@@ -32,6 +35,7 @@ export const styles = {
     lineHeight: "1",
     m: "0",
     overflowWrap: "anywhere",
+    whiteSpace: "nowrap",
   }),
   roundMeta: css({
     color: "#3e3e3e",
@@ -40,11 +44,12 @@ export const styles = {
     letterSpacing: "0",
     lineHeight: "1.2",
     m: "2 0 0",
+    whiteSpace: "nowrap",
   }),
   summaryDivider: css({
     background: "#c9c6be",
-    h: "4.25rem",
-    w: "2px",
+    h: { base: "2px", sm: "4.25rem" },
+    w: { base: "100%", sm: "2px" },
   }),
   leaderSummary: css({
     alignItems: "center",
