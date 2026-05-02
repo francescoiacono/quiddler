@@ -1,5 +1,5 @@
 import { cx } from "@styled-system/css";
-import { Crown, User } from "lucide-react";
+import { Crown } from "lucide-react";
 import type { PlayerId, PlayerStanding } from "@/game";
 import { copy } from "@/i18n/copy";
 import { styles } from "./standings-list.styles";
@@ -10,16 +10,31 @@ interface StandingsListProps {
   standings: PlayerStanding[];
   /** Current leader id, or null when no player leads yet. */
   leaderPlayerId: PlayerId | null;
+  /** Whether every Quiddler round has already been scored. */
+  isGameComplete: boolean;
 }
 
-export const StandingsList = ({ leaderPlayerId, standings }: StandingsListProps) => {
+export const StandingsList = ({
+  isGameComplete,
+  leaderPlayerId,
+  standings,
+}: StandingsListProps) => {
   const gameCopy = copy.routes.game;
+  const standingsTitle = isGameComplete
+    ? gameCopy.leaderboard.completeTitle
+    : gameCopy.leaderboard.title;
+  const highlightedBadgeLabel = isGameComplete
+    ? gameCopy.roster.winnerLabel
+    : gameCopy.roster.leaderLabel;
 
   return (
     <section className={styles.standingsSection} aria-labelledby="standings-title">
-      <h2 className={styles.visuallyHidden} id="standings-title">
-        {gameCopy.leaderboard.title}
-      </h2>
+      <div className={styles.sectionHeader}>
+        <h2 className={styles.sectionTitle} id="standings-title">
+          {standingsTitle}
+        </h2>
+        <span className={styles.sectionMeta}>{gameCopy.roster.totalLabel}</span>
+      </div>
 
       {standings.length === 0 ? (
         <div className={styles.emptyState}>
@@ -28,27 +43,43 @@ export const StandingsList = ({ leaderPlayerId, standings }: StandingsListProps)
         </div>
       ) : (
         <ol className={styles.playerList}>
-          {standings.map((standing) => {
-            const isLeader = standing.player.id === leaderPlayerId;
+          {standings.map((standing, index) => {
+            const isHighlighted = standing.player.id === leaderPlayerId;
+            const isLeader = !isGameComplete && isHighlighted;
+            const isWinner = isGameComplete && isHighlighted;
 
             return (
               <li
-                className={cx(styles.playerCard, isLeader && styles.playerCardLeader)}
+                className={cx(
+                  styles.playerCard,
+                  isLeader && styles.playerCardLeader,
+                  isWinner && styles.playerCardWinner,
+                )}
                 key={standing.player.id}
               >
-                <span className={styles.avatar}>
-                  <User className={styles.avatarIcon} />
+                <span className={styles.playerRank} aria-hidden="true">
+                  {index + 1}
                 </span>
                 <span className={styles.playerNameGroup}>
-                  <span className={styles.playerName}>{standing.player.name}</span>
-                  {isLeader ? (
-                    <span className={styles.leaderBadge}>
+                  <span className={cx(styles.playerName, isWinner && styles.playerNameWinner)}>
+                    {standing.player.name}
+                  </span>
+                  {isHighlighted ? (
+                    <span className={cx(styles.leaderBadge, isWinner && styles.winnerBadge)}>
                       <Crown className={styles.leaderBadgeIcon} />
-                      {gameCopy.roster.leaderLabel}
+                      {highlightedBadgeLabel}
                     </span>
                   ) : null}
                 </span>
-                <strong className={styles.totalScore}>{standing.total}</strong>
+                <strong
+                  className={cx(
+                    styles.totalScore,
+                    isHighlighted && styles.totalScoreHighlight,
+                    isWinner && styles.totalScoreWinner,
+                  )}
+                >
+                  {standing.total}
+                </strong>
               </li>
             );
           })}

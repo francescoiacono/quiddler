@@ -15,6 +15,21 @@ const getFocusableControls = (modalElement: HTMLElement) =>
     (control) => control.offsetParent !== null,
   );
 
+/** Keeps score input to an optional leading minus sign followed by digits. */
+const normalizeScoreInput = (score: string) => {
+  const hasNegativeSign = score.trimStart().startsWith("-");
+  const digits = score.replace(/\D/g, "");
+
+  return `${hasNegativeSign ? "-" : ""}${digits}`;
+};
+
+/** Toggles the editable sign for a pending score string. */
+const toggleScoreSign = (score: string) => {
+  const normalizedScore = normalizeScoreInput(score);
+
+  return normalizedScore.startsWith("-") ? normalizedScore.slice(1) : `-${normalizedScore}`;
+};
+
 /** Props for the score entry form for the next round. */
 interface AddRoundFormProps {
   /** Active game whose locked roster should receive scores. */
@@ -73,7 +88,16 @@ export const AddRoundForm = ({
   const handleScoreChange = (playerId: PlayerId, score: string) => {
     setScoreEntries((currentEntries) => ({
       ...currentEntries,
-      [playerId]: score,
+      [playerId]: normalizeScoreInput(score),
+    }));
+    setRoundError(null);
+  };
+
+  /** Toggles one player's pending score between positive and negative entry. */
+  const handleToggleScoreSign = (playerId: PlayerId) => {
+    setScoreEntries((currentEntries) => ({
+      ...currentEntries,
+      [playerId]: toggleScoreSign(currentEntries[playerId] ?? ""),
     }));
     setRoundError(null);
   };
@@ -180,24 +204,38 @@ export const AddRoundForm = ({
                   <span>{player.name}</span>
                   <span>{gameCopy.addRound.scoreLabel}</span>
                 </label>
-                <input
-                  aria-describedby={
-                    roundError === null
-                      ? roundScoreHelpId
-                      : `${roundScoreHelpId} ${roundFormErrorId}`
-                  }
-                  aria-invalid={roundError === null ? undefined : true}
-                  className={styles.scoreInput}
-                  id={scoreInputId}
-                  inputMode="numeric"
-                  onChange={(event) => {
-                    handleScoreChange(player.id, event.target.value);
-                  }}
-                  ref={index === 0 ? firstScoreInputRef : undefined}
-                  step="1"
-                  type="number"
-                  value={scoreEntries[player.id] ?? ""}
-                />
+                <div className={styles.scoreControl}>
+                  <button
+                    aria-label={`${gameCopy.addRound.signToggleLabel} ${player.name}`}
+                    aria-pressed={(scoreEntries[player.id] ?? "").startsWith("-")}
+                    className={styles.signToggleButton}
+                    onClick={() => {
+                      handleToggleScoreSign(player.id);
+                    }}
+                    type="button"
+                  >
+                    +/-
+                  </button>
+                  <input
+                    aria-describedby={
+                      roundError === null
+                        ? roundScoreHelpId
+                        : `${roundScoreHelpId} ${roundFormErrorId}`
+                    }
+                    aria-invalid={roundError === null ? undefined : true}
+                    autoComplete="off"
+                    className={styles.scoreInput}
+                    enterKeyHint={index === game.players.length - 1 ? "done" : "next"}
+                    id={scoreInputId}
+                    inputMode="numeric"
+                    onChange={(event) => {
+                      handleScoreChange(player.id, event.target.value);
+                    }}
+                    ref={index === 0 ? firstScoreInputRef : undefined}
+                    type="text"
+                    value={scoreEntries[player.id] ?? ""}
+                  />
+                </div>
               </div>
             );
           })}

@@ -3,7 +3,6 @@ import { useState } from "react";
 import { Link, Navigate, useNavigate } from "react-router";
 import { BottomNav } from "@/app/bottom-nav";
 import {
-  getCurrentLeader,
   getHasRemainingRounds,
   getNextRoundNumber,
   getPlayerStandings,
@@ -64,10 +63,12 @@ export const GamePage = () => {
     return <Navigate to="/" replace />;
   }
 
-  const leader = getCurrentLeader(activeGame);
   const standings = getPlayerStandings(activeGame);
+  const hasScoredRounds = activeGame.rounds.length > 0;
+  const leader = hasScoredRounds ? (standings[0] ?? null) : null;
   const nextRoundNumber = getNextRoundNumber(activeGame);
   const hasRemainingRounds = getHasRemainingRounds(activeGame);
+  const isGameComplete = !hasRemainingRounds;
   const displayedRoundNumber = hasRemainingRounds ? nextRoundNumber : maxQuiddlerRounds;
   const displayedRoundCardCount = getRoundCardCount(displayedRoundNumber);
   const isAddRoundDisabled = activeGame.players.length < minQuiddlerPlayers || !hasRemainingRounds;
@@ -88,11 +89,16 @@ export const GamePage = () => {
 
         <RoundSummary
           cardCount={displayedRoundCardCount}
+          isGameComplete={isGameComplete}
           leaderName={leader?.player.name ?? null}
           roundNumber={displayedRoundNumber}
         />
 
-        <StandingsList standings={standings} leaderPlayerId={leader?.player.id ?? null} />
+        <StandingsList
+          isGameComplete={isGameComplete}
+          leaderPlayerId={leader?.player.id ?? null}
+          standings={standings}
+        />
 
         <RoundHistory game={activeGame} isOpen={isHistoryOpen} onToggle={handleToggleHistory} />
 

@@ -17,9 +17,9 @@ export const PlayerRoster = ({ onRemovePlayer, playerNames }: PlayerRosterProps)
   return (
     <section className={styles.roster} aria-labelledby="setup-roster-title">
       <div className={styles.rosterHeader}>
-        <h3 className={styles.rosterTitle} id="setup-roster-title">
+        <h2 className={styles.rosterTitle} id="setup-roster-title">
           {homeCopy.players.title}
-        </h3>
+        </h2>
         <p className={styles.playerCount}>
           {playerNames.length}/{maxQuiddlerPlayers} {homeCopy.players.countLabel}
         </p>

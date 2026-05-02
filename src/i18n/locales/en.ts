@@ -16,8 +16,9 @@ export const en = {
     game: {
       addRound: {
         cancel: "Cancel",
-        fieldHelp: "Use 0 for players who did not score.",
+        fieldHelp: "Use 0 for players who did not score. Tap +/- to enter a negative score.",
         scoreLabel: "Score",
+        signToggleLabel: "Toggle negative score for",
         submit: "Save round",
         title: "Add round",
         validation: {
@@ -45,11 +46,13 @@ export const en = {
         unknownPlayer: "Unknown player",
       },
       leaderboard: {
+        completeTitle: "Final standings",
         title: "Standings",
       },
       leader: {
         empty: "No leader yet",
         label: "Leader",
+        winnerLabel: "Winner",
       },
       round: {
         cardsLabel: "cards",
@@ -60,8 +63,12 @@ export const en = {
         playerCountLabel: "Players",
         title: "Players",
         totalLabel: "Total",
+        winnerLabel: "Winner",
       },
       summary: {
+        completeLabel: "Game complete",
+        nextRoundLabel: "Next round",
+        roundsScoredLabel: "rounds scored",
         roundsLabel: "Rounds",
         title: "Game summary",
       },
