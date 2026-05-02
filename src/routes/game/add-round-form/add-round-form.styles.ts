@@ -6,17 +6,34 @@ const focusRing = {
 };
 
 export const styles = {
+  modalBackdrop: css({
+    alignItems: { base: "end", sm: "center" },
+    background: "rgba(32, 32, 32, 0.56)",
+    backdropFilter: "blur(6px)",
+    display: "grid",
+    inset: "0",
+    justifyItems: "center",
+    p: { base: "4", sm: "6" },
+    position: "fixed",
+    zIndex: "20",
+  }),
   roundFormPanel: css({
     background: "#ffffff",
     border: "2px solid #4d4d4d",
     borderRadius: "8px",
+    boxShadow: "0 1.5rem 4rem rgba(0, 0, 0, 0.28)",
     display: "grid",
     gap: "4",
+    maxH: "calc(100svh - 2rem)",
+    maxW: "31rem",
+    overflowY: "auto",
     p: "4",
+    width: "100%",
   }),
   roundFormHeader: css({
     alignItems: "start",
     display: "flex",
+    gap: "3",
     justifyContent: "space-between",
   }),
   sectionTitle: css({
@@ -33,6 +50,28 @@ export const styles = {
     letterSpacing: "0",
     lineHeight: "1.2",
     m: "2 0 0",
+  }),
+  closeButton: css({
+    alignItems: "center",
+    appearance: "none",
+    background: "#ffffff",
+    border: "2px solid #c9c7c1",
+    borderRadius: "8px",
+    color: "#202020",
+    cursor: "pointer",
+    display: "inline-flex",
+    flexShrink: "0",
+    h: "2.75rem",
+    justifyContent: "center",
+    w: "2.75rem",
+    _focusVisible: focusRing,
+    _hover: {
+      background: "#f0eee8",
+    },
+  }),
+  closeIcon: css({
+    h: "1.4rem",
+    w: "1.4rem",
   }),
   roundForm: css({
     display: "grid",
