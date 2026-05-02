@@ -1,10 +1,15 @@
 export const en = {
   app: {
-    documentTitle: "Quiddler Counter",
+    documentTitle: "Quiddler Scorekeeper",
     navigation: {
       game: "Game",
       primaryLabel: "Primary",
       wordChecker: "Word Checker",
+    },
+    pwa: {
+      description: "A local-first Quiddler scorekeeper for tracking players, rounds, and totals.",
+      name: "Quiddler Scorekeeper",
+      shortName: "Quiddler",
     },
   },
   routes: {

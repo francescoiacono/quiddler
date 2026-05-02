@@ -78,6 +78,13 @@ Technical direction:
 - Import copy through `src/i18n/copy.ts` so a future full i18n provider can replace that entry point without changing every route.
 - Do not add a full i18n runtime library until the app needs locale switching, formatting, pluralization, or external translation workflows.
 
+## Deployment
+
+- Build the production container with the root `Dockerfile`.
+- The Docker runtime serves the Vite build from Nginx on port `8080`.
+- Keep service worker, manifest, and app shell responses uncached at the HTTP layer so PWA updates can be discovered promptly.
+- Cache fingerprinted files under `/assets/` immutably.
+
 ## Accessibility
 
 - Treat WCAG 2.2 AA as the baseline for user-facing work, and prefer inclusive defaults even when a requirement is not explicitly covered by automated checks.

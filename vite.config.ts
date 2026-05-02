@@ -1,13 +1,21 @@
 import react from "@vitejs/plugin-react";
 import { fileURLToPath, URL } from "node:url";
+import { VitePWA } from "vite-plugin-pwa";
 import { defineConfig } from "vite-plus";
+import { en } from "./src/i18n/locales/en.ts";
 
 // https://vite.dev/config/
+const appBackgroundColor = "#fbfaf7";
+const appThemeColor = "#202020";
+const pwaCopy = en.app.pwa;
+
 export default defineConfig({
   staged: {
     "*": "vp check --fix",
   },
-  fmt: {},
+  fmt: {
+    ignorePatterns: ["dev-dist/**", "dist/**"],
+  },
   lint: {
     plugins: ["oxc", "typescript", "unicorn", "react"],
     categories: {
@@ -16,7 +24,7 @@ export default defineConfig({
     env: {
       builtin: true,
     },
-    ignorePatterns: ["dist"],
+    ignorePatterns: ["dev-dist/**", "dist/**"],
     overrides: [
       {
         files: ["**/*.{ts,tsx}"],
@@ -121,7 +129,66 @@ export default defineConfig({
       typeCheck: true,
     },
   },
-  plugins: [react()],
+  plugins: [
+    react(),
+    VitePWA({
+      devOptions: {
+        enabled: true,
+      },
+      includeAssets: ["favicon.svg", "apple-touch-icon.png"],
+      manifest: {
+        background_color: appBackgroundColor,
+        categories: ["games", "utilities"],
+        description: pwaCopy.description,
+        display: "standalone",
+        icons: [
+          {
+            sizes: "192x192",
+            src: "/pwa-192x192.png",
+            type: "image/png",
+          },
+          {
+            sizes: "512x512",
+            src: "/pwa-512x512.png",
+            type: "image/png",
+          },
+          {
+            purpose: "maskable",
+            sizes: "512x512",
+            src: "/maskable-icon-512x512.png",
+            type: "image/png",
+          },
+        ],
+        id: "/",
+        name: pwaCopy.name,
+        scope: "/",
+        short_name: pwaCopy.shortName,
+        start_url: "/",
+        theme_color: appThemeColor,
+      },
+      registerType: "autoUpdate",
+      workbox: {
+        globPatterns: ["**/*.{js,css,html,ico,png,svg,webp,woff2}"],
+        navigateFallback: "/index.html",
+        runtimeCaching: [
+          {
+            handler: "NetworkFirst",
+            options: {
+              cacheName: "dictionary-api",
+              cacheableResponse: {
+                statuses: [0, 200],
+              },
+              expiration: {
+                maxAgeSeconds: 60 * 60 * 24 * 30,
+                maxEntries: 100,
+              },
+            },
+            urlPattern: /^https:\/\/api\.dictionaryapi\.dev\/api\/v2\/entries\/en\/.*$/i,
+          },
+        ],
+      },
+    }),
+  ],
   resolve: {
     alias: {
       "@styled-system": fileURLToPath(new URL("./styled-system", import.meta.url)),

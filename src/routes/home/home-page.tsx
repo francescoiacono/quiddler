@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { WalletCards } from "lucide-react";
 import { Navigate, useNavigate } from "react-router";
 import { maxQuiddlerPlayers, minQuiddlerPlayers, useGameStore } from "@/game";
 import { copy } from "@/i18n/copy";
@@ -77,7 +78,12 @@ export const HomePage = () => {
     <main className={styles.page}>
       <div className={styles.shell}>
         <header className={styles.appHeader}>
-          <h1 className={styles.appTitle}>{copy.app.documentTitle}</h1>
+          <div className={styles.brand}>
+            <span className={styles.brandMark}>
+              <WalletCards className={styles.brandIcon} />
+            </span>
+            <p className={styles.appTitle}>{copy.app.documentTitle}</p>
+          </div>
         </header>
 
         <section aria-labelledby="home-title" className={styles.setupPanel}>

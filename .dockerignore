@@ -1,0 +1,14 @@
+.DS_Store
+.git
+.idea
+.vite-hooks
+.vscode
+dev-dist
+dist
+dist-ssr
+logs
+node_modules
+styled-system
+styled-system-studio
+*.local
+*.log
