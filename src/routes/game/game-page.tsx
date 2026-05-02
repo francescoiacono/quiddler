@@ -9,6 +9,7 @@ import {
   getPlayerStandings,
   getRoundCardCount,
   maxQuiddlerRounds,
+  minQuiddlerPlayers,
   useGameStore,
   type RoundScore,
 } from "@/game";
@@ -69,7 +70,7 @@ export const GamePage = () => {
   const hasRemainingRounds = getHasRemainingRounds(activeGame);
   const displayedRoundNumber = hasRemainingRounds ? nextRoundNumber : maxQuiddlerRounds;
   const displayedRoundCardCount = getRoundCardCount(displayedRoundNumber);
-  const isAddRoundDisabled = activeGame.players.length === 0 || !hasRemainingRounds;
+  const isAddRoundDisabled = activeGame.players.length < minQuiddlerPlayers || !hasRemainingRounds;
 
   return (
     <main className={styles.page}>

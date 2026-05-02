@@ -15,7 +15,7 @@ import type {
 const gameStoreKey = "quiddler-game";
 
 /** Minimum number of players supported by Quiddler. */
-export const minQuiddlerPlayers = 1;
+export const minQuiddlerPlayers = 2;
 
 /** Maximum number of players supported by Quiddler. */
 export const maxQuiddlerPlayers = 8;
@@ -122,7 +122,7 @@ export const useGameStore = create<GameStoreState>()(
 
         if (
           activeGame === null ||
-          activeGame.players.length === 0 ||
+          activeGame.players.length < minQuiddlerPlayers ||
           !getHasRemainingRounds(activeGame)
         ) {
           return null;

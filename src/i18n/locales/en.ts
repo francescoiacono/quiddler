@@ -93,7 +93,7 @@ export const en = {
       players: {
         add: "Add",
         countLabel: "players",
-        limit: "Quiddler supports 1 to 8 players.",
+        limit: "Quiddler supports 2 to 8 players.",
         limitReached: "Player limit reached.",
         remove: "Remove player",
         title: "Players",
@@ -103,7 +103,7 @@ export const en = {
         duplicatePlayer: "That player is already in the game.",
         playerLimit: "Quiddler allows up to 8 players.",
         playerRequired: "Enter a player name.",
-        rosterRequired: "Add at least one player to start.",
+        rosterRequired: "Add at least 2 players to start.",
       },
     },
   },
