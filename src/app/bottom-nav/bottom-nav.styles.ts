@@ -2,7 +2,7 @@ import { css } from "@styled-system/css";
 
 export const styles = {
   nav: css({
-    background: "rgba(255, 255, 255, 0.96)",
+    background: "#ffffff",
     borderTop: "1px solid #d4d4d4",
     bottom: "0",
     display: "grid",
@@ -35,12 +35,12 @@ export const styles = {
       boxShadow: "inset 0 0 0 3px rgba(33, 33, 33, 0.18)",
     },
     _hover: {
-      background: "rgba(32, 32, 32, 0.04)",
+      background: "#f3f2ed",
       color: "#202020",
     },
   }),
   activeLink: css({
-    background: "linear-gradient(180deg, rgba(32, 32, 32, 0.07), rgba(32, 32, 32, 0))",
+    background: "linear-gradient(180deg, #eeeeee, #ffffff)",
     color: "#202020",
     fontWeight: "800",
     _before: {
