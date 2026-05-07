@@ -138,6 +138,11 @@ export const styles = {
       borderColor: "#202020",
       color: "#ffffff",
     },
+    "&[aria-pressed=true]:hover": {
+      background: "#303030",
+      borderColor: "#303030",
+      color: "#ffffff",
+    },
   }),
   scoreInput: css({
     appearance: "none",

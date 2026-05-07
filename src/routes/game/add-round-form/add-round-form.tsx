@@ -1,8 +1,13 @@
-import { type FormEvent, type KeyboardEvent, useEffect, useId, useRef, useState } from "react";
+import { type KeyboardEvent, type SyntheticEvent, useEffect, useId, useRef, useState } from "react";
 import { X } from "lucide-react";
 import type { Game, PlayerId, RoundScore } from "@/game";
 import { copy } from "@/i18n/copy";
-import { createScoreEntries, type ScoreEntries } from "../game-helpers";
+import {
+  createScoreEntries,
+  createScoreEntry,
+  type ScoreEntries,
+  type ScoreEntry,
+} from "../game-helpers";
 import { styles } from "./add-round-form.styles";
 
 /** Selector for controls that can receive focus inside the modal. */
@@ -15,19 +20,36 @@ const getFocusableControls = (modalElement: HTMLElement) =>
     (control) => control.offsetParent !== null,
   );
 
-/** Keeps score input to an optional leading minus sign followed by digits. */
-const normalizeScoreInput = (score: string) => {
-  const hasNegativeSign = score.trimStart().startsWith("-");
-  const digits = score.replace(/\D/g, "");
+/** Returns only the typed numeric digits from a score field value. */
+const getScoreDigits = (score: string) => score.replace(/\D/g, "");
 
-  return `${hasNegativeSign ? "-" : ""}${digits}`;
+/** Formats a pending score entry for the controlled input value. */
+const formatScoreEntry = (scoreEntry: ScoreEntry) => {
+  const sign = scoreEntry.isNegative ? "-" : "";
+
+  return `${sign}${scoreEntry.digits}`;
 };
 
-/** Toggles the editable sign for a pending score string. */
-const toggleScoreSign = (score: string) => {
-  const normalizedScore = normalizeScoreInput(score);
+/** Updates score digits while preserving the separately controlled sign intent. */
+const updateScoreEntryFromInput = (score: string, scoreEntry: ScoreEntry): ScoreEntry => {
+  if (score.trim().length === 0) {
+    return createScoreEntry();
+  }
 
-  return normalizedScore.startsWith("-") ? normalizedScore.slice(1) : `-${normalizedScore}`;
+  const trimmedScore = score.trimStart();
+  const startsWithNegativeSign = trimmedScore.startsWith("-");
+  const startsWithPositiveSign = trimmedScore.startsWith("+");
+  const digits = getScoreDigits(score);
+  const preservesPendingNegativeSign =
+    scoreEntry.isNegative &&
+    scoreEntry.digits.length === 0 &&
+    digits.length > 0 &&
+    !startsWithPositiveSign;
+
+  return {
+    digits,
+    isNegative: startsWithNegativeSign || preservesPendingNegativeSign,
+  };
 };
 
 /** Props for the score entry form for the next round. */
@@ -86,37 +108,49 @@ export const AddRoundForm = ({
 
   /** Updates one player's pending score field. */
   const handleScoreChange = (playerId: PlayerId, score: string) => {
-    setScoreEntries((currentEntries) => ({
-      ...currentEntries,
-      [playerId]: normalizeScoreInput(score),
-    }));
+    setScoreEntries((currentEntries) => {
+      const currentScoreEntry = currentEntries[playerId] ?? createScoreEntry();
+
+      return {
+        ...currentEntries,
+        [playerId]: updateScoreEntryFromInput(score, currentScoreEntry),
+      };
+    });
     setRoundError(null);
   };
 
   /** Toggles one player's pending score between positive and negative entry. */
   const handleToggleScoreSign = (playerId: PlayerId) => {
-    setScoreEntries((currentEntries) => ({
-      ...currentEntries,
-      [playerId]: toggleScoreSign(currentEntries[playerId] ?? ""),
-    }));
+    setScoreEntries((currentEntries) => {
+      const currentScoreEntry = currentEntries[playerId] ?? createScoreEntry();
+
+      return {
+        ...currentEntries,
+        [playerId]: {
+          ...currentScoreEntry,
+          isNegative: !currentScoreEntry.isNegative,
+        },
+      };
+    });
     setRoundError(null);
   };
 
   /** Validates the score form and passes complete round scores upward. */
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (event: SyntheticEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     const parsedScores: RoundScore[] = [];
 
     for (const player of game.players) {
-      const rawScore = scoreEntries[player.id]?.trim() ?? "";
+      const scoreEntry = scoreEntries[player.id] ?? createScoreEntry();
 
-      if (rawScore.length === 0) {
+      if (scoreEntry.digits.length === 0) {
         setRoundError(gameCopy.addRound.validation.incomplete);
         return;
       }
 
-      const score = Number(rawScore);
+      const unsignedScore = Number(scoreEntry.digits);
+      const score = scoreEntry.isNegative && unsignedScore !== 0 ? -unsignedScore : unsignedScore;
 
       if (!Number.isInteger(score)) {
         setRoundError(gameCopy.addRound.validation.invalid);
@@ -197,6 +231,7 @@ export const AddRoundForm = ({
 
           {game.players.map((player, index) => {
             const scoreInputId = `${scoreInputPrefix}-${player.id}`;
+            const scoreEntry = scoreEntries[player.id] ?? createScoreEntry();
 
             return (
               <div className={styles.scoreField} key={player.id}>
@@ -207,7 +242,7 @@ export const AddRoundForm = ({
                 <div className={styles.scoreControl}>
                   <button
                     aria-label={`${gameCopy.addRound.signToggleLabel} ${player.name}`}
-                    aria-pressed={(scoreEntries[player.id] ?? "").startsWith("-")}
+                    aria-pressed={scoreEntry.isNegative}
                     className={styles.signToggleButton}
                     onClick={() => {
                       handleToggleScoreSign(player.id);
@@ -233,7 +268,7 @@ export const AddRoundForm = ({
                     }}
                     ref={index === 0 ? firstScoreInputRef : undefined}
                     type="text"
-                    value={scoreEntries[player.id] ?? ""}
+                    value={formatScoreEntry(scoreEntry)}
                   />
                 </div>
               </div>
