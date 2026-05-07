@@ -1,4 +1,4 @@
-import { type FormEvent, useId, useState } from "react";
+import { type SyntheticEvent, useId, useState } from "react";
 import { copy } from "@/i18n/copy";
 import { styles } from "./player-name-form.styles";
 
@@ -27,7 +27,7 @@ export const PlayerNameForm = ({
   const [playerName, setPlayerName] = useState("");
 
   /** Submits the pending player name to the setup roster. */
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (event: SyntheticEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     if (onAddPlayer(playerName)) {

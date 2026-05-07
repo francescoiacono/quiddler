@@ -1,4 +1,4 @@
-import { type FormEvent, useId, useRef, useState } from "react";
+import { type SyntheticEvent, useId, useRef, useState } from "react";
 import { Home } from "lucide-react";
 import { Link } from "react-router";
 import { BottomNav } from "@/app/bottom-nav";
@@ -136,7 +136,7 @@ export const WordCheckerPage = () => {
   };
 
   /** Runs the word lookup from the form submit action. */
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (event: SyntheticEvent<HTMLFormElement>) => {
     event.preventDefault();
     void checkWord();
   };
